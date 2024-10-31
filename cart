@@ -1,0 +1,44 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['cart'])) {
+    $_SESSION['cart'] = [];
+}
+
+if (isset($_POST['add_to_cart'])) {
+    $productId = $_POST['product_id'];
+    $quantity = $_POST['quantity'];
+    
+    if (isset($_SESSION['cart'][$productId])) {
+        $_SESSION['cart'][$productId] += $quantity;
+    } else {
+        $_SESSION['cart'][$productId] = $quantity;
+    }
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div class="cart">
+        <?php if (empty($_SESSION['cart'])): ?>
+            <p>Your cart is empty.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($_SESSION['cart'] as $productId => $quantity): ?>
+                    <li>Product ID: <?= htmlspecialchars($productId) ?>, Quantity: <?= htmlspecialchars($quantity) ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <a href="checkout.php">Checkout</a>
+        <?php endif; ?>
+    </div>
+    <a href="catalog.php">Continue Shopping</a>
+</body>
+</html>

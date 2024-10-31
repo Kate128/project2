@@ -1,0 +1,34 @@
+<?php
+// created by Ekaterina Horbachenko
+require 'db.php';
+session_start();
+
+$products = getProducts();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Catalog</h1>
+    <div class="catalog">
+        <?php foreach ($products as $product): ?>
+            <div class="product">
+                <h2><?= htmlspecialchars($product['name']) ?></h2>
+                <p><?= htmlspecialchars($product['description']) ?></p>
+                <p>Price: $<?= htmlspecialchars($product['price']) ?></p>
+                <form action="cart.php" method="post">
+                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                    <input type="number" name="quantity" value="1" min="1">
+                    <button type="submit" name="add_to_cart">Add to Cart</button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <a href="cart.php">View Cart</a>
+</body>
+</html>
